@@ -1,0 +1,52 @@
+.alert {
+  font-size: 22px;
+}
+
+.productContainer {
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 20px 20px;
+}
+
+.mainWrapper {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px 20px;
+  padding: 10px 20px;
+  position: relative;
+}
+.list {
+}
+.details {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: scroll;
+}
+.postItem {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid blue;
+  h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  p {
+    margin-top: 0;
+  }
+}
+
+
+.comment {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid rgb(186, 186, 186);
+  h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+}
