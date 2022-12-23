@@ -8,6 +8,9 @@ import Loader from 'components/Loader/Loader';
 import { fetchPostComments, fetchPosts } from 'services/api';
 
 import css from './App.module.scss';
+import Details from 'components/Details/Details';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const styles = {
   color: '#010101',
@@ -46,113 +49,107 @@ const styles = {
 //   },
 // ];
 
-export class App extends React.Component {
-  state = {
-    posts: [],
-    comments: [],
-    isLoading: false,
-    error: '',
-    selectedPostId: null,
-  };
+export const App = () => {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
-  async componentDidMount() {
+  const getPosts = async () => {
     try {
-      this.setState({ isLoading: true });
+      setIsLoading(true);
       const posts = await fetchPosts();
 
-      this.setState({ posts: posts });
+      setPosts(posts);
     } catch (error) {
-      this.setState({ error: error.message });
+      setError(error.message);
     } finally {
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
-  }
-
-  async componentDidUpdate(_, prevState) {
-    const { selectedPostId } = this.state;
-
-    if (selectedPostId !== prevState.selectedPostId) {
-      try {
-        this.setState({ isLoading: true });
-        const comments = await fetchPostComments(selectedPostId);
-
-        this.setState({ comments: comments });
-      } catch (error) {
-        this.setState({ error: error.message });
-      } finally {
-        this.setState({ isLoading: false });
-      }
-    }
-  }
-
-  onSelectPostId = postId => {
-    this.setState({ selectedPostId: postId });
   };
 
-  render() {
-    const { isLoading, posts, comments } = this.state;
+  const getPostComments = async selectedPostId => {
+    try {
+      setIsLoading(true);
+      const comments = await fetchPostComments(selectedPostId);
 
-    const hasError = this.state.error.length > 0;
-    return (
-      <div style={styles}>
-        {hasError && <ErrorIndicator error={this.state.error} />}
-        <div className={css.mainWrapper}>
-          <div className={css.list}>
-            <h2>Posts</h2>
-            {isLoading && <Loader />}
-            {Array.isArray(posts) &&
-              posts.map(post => {
-                return (
-                  <div
-                    key={post.id}
-                    className={css.postItem}
-                    onClick={() => this.onSelectPostId(post.id)}
-                  >
-                    <h3>{post.title}</h3>
-                    <p>{post.body}</p>
-                  </div>
-                );
-              })}
-          </div>
-          <div className={css.details}>
-            <h3>Comments</h3>
-            <p>PostId: {this.state.selectedPostId}</p>
-            {comments?.length === 0 && (
-              <p>
-                There are no comments for current post. Please selecte another
-                one.
-              </p>
-            )}
-            {Array.isArray(comments) &&
-              comments.map(({ id, name, email, body }) => {
-                return (
-                  <div key={id} className={css.comment}>
-                    <h4>Name: {name}</h4>
-                    <p>
-                      <b>Email:</b> {email}
-                    </p>
-                    <p>
-                      <b>Body:</b> {body}
-                    </p>
-                  </div>
-                );
-              })}
-          </div>
+      setComments(comments);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []); // componentDidMount
+
+  useEffect(() => {
+    if (selectedPostId === null) return;
+
+    getPostComments(selectedPostId);
+  }, [selectedPostId]); // componentDidUpdate
+
+
+  
+  const onSelectPostId = postId => {
+    setSelectedPostId(postId);
+  };
+
+  const onDelete = postId => {
+    setPosts(posts.filter(post => post.id !== postId));
+  };
+
+  const hasError = error.length > 0;
+  return (
+    <div style={styles}>
+      {/* <Details /> */}
+      {hasError && <ErrorIndicator error={error} onDelete={onDelete} />}
+      <div className={css.mainWrapper}>
+        <div className={css.list}>
+          <h2>Posts</h2>
+          {isLoading && <Loader />}
+          {Array.isArray(posts) &&
+            posts.map(post => {
+              return (
+                <div
+                  key={post.id}
+                  className={css.postItem}
+                  onClick={() => onSelectPostId(post.id)}
+                >
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                </div>
+              );
+            })}
         </div>
-        {/* <div className={css.productContainer}>
-          {productData.map(product => {
-            return (
-              <Product
-                key={product.img}
-                image={product.img}
-                title={product.title}
-                price={product.price}
-                discount={product.discount}
-              />
-            );
-          })}
-        </div> */}
+        <div className={css.details}>
+          <h3>Comments</h3>
+          <p>PostId: {selectedPostId}</p>
+          {comments?.length === 0 && (
+            <p>
+              There are no comments for current post. Please selecte another
+              one.
+            </p>
+          )}
+          {Array.isArray(comments) &&
+            comments.map(({ id, name, email, body }) => {
+              return (
+                <div key={id} className={css.comment}>
+                  <h4>Name: {name}</h4>
+                  <p>
+                    <b>Email:</b> {email}
+                  </p>
+                  <p>
+                    <b>Body:</b> {body}
+                  </p>
+                </div>
+              );
+            })}
+        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
