@@ -14,6 +14,10 @@
   gap: 20px 20px;
   padding: 10px 20px;
   position: relative;
+
+}
+.mainWrapper.mobile {
+  grid-template-columns: 1fr;
 }
 .list {
 }
@@ -22,6 +26,10 @@
   top: 0;
   height: 100vh;
   overflow: scroll;
+}
+.mobileDetails {
+  overflow: scroll;
+  max-height: 500px;
 }
 .postItem {
   margin-bottom: 20px;
@@ -35,7 +43,6 @@
     margin-top: 0;
   }
 }
-
 
 .comment {
   margin-bottom: 15px;
