@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import ErrorIndicator from 'components/ErrorIndicator';
-import Loader from 'components/Loader/Loader';
-import Details from 'components/Details/Details';
-// import Details from 'components/Details/Details';
+import HomePage from 'pages/HomePage';
+import DetailsPage from 'pages/DetailsPage';
+import PageNotFound404 from 'pages/PageNotFound404';
 
-import useSelectPost from 'hooks/useSelectPost';
-import useToggle from 'hooks/useToggle';
-import { fetchPosts } from 'services/api';
-
-import css from './App.module.scss';
-import useResizeScreen from 'hooks/useResizeScreen';
-
-const styles = {
-  color: '#010101',
-};
+import PostComments from 'pages/PostComments';
+import Layout from 'Layout/Layout';
 
 // const productData = [
 //   {
@@ -50,140 +41,15 @@ const styles = {
 //   },
 // ];
 
-/*
-Рефи: 
-1. Коли потрібно реагувати на фокус/блюр/виділення елементу
-2. Коли потрібно дістатися до властивостей HTML-елементу (value, styles, src, innerText, innerHTML)
-3. При інтеграції бібліотек, які працюють з DOM(Vanilla js)
-4. Коли нам потрібно зберегти значення між рендерами(setInterval, setTimeout)
-*/
-
-/*
-Кастомні хуки:
-1. Винесення логіки в окреме місці
-2. Перевикористання одноманітною логіки в різних компонентах
-3. Розбити компонент на якісь функціональні частини, щоб він 
-не роздувався і його можна було легко підтримувати і масштабувати
-*/
 export const App = () => {
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { isMobile, isTablet } = useResizeScreen();
-
-  const {
-    selectedPostId,
-    setSelectedPostId,
-    comments,
-    isLoadingComments,
-    commentsError,
-  } = useSelectPost();
-
-  const { visible, toggle } = useToggle();
-
-  const getPosts = async () => {
-    try {
-      setIsLoading(true);
-      const posts = await fetchPosts();
-
-      setPosts(posts);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getPosts();
-  }, []); // componentDidMount
-
-  const onSelectPostId = postId => {
-    setSelectedPostId(postId);
-  };
-
-  const hasError = error.length > 0;
-  const hasCommentsError = commentsError.length > 0;
   return (
-    <div style={styles}>
-      <button onClick={toggle}>Toggle more details</button>
-      {visible && <Details />}
-      {hasError && <ErrorIndicator error={error} />}
-      {hasCommentsError && <ErrorIndicator error={hasCommentsError} />}
-
-      {isMobile && (
-        <div className={css.mobileDetails}>
-          <h3>Comments</h3>
-          <p>PostId: {selectedPostId}</p>
-          {comments?.length === 0 && (
-            <p>
-              There are no comments for current post. Please selecte another
-              one.
-            </p>
-          )}
-          {Array.isArray(comments) &&
-            comments.map(({ id, name, email, body }) => {
-              return (
-                <div key={id} className={css.comment}>
-                  <h4>Name: {name}</h4>
-                  <p>
-                    <b>Email:</b> {email}
-                  </p>
-                  <p>
-                    <b>Body:</b> {body}
-                  </p>
-                </div>
-              );
-            })}
-        </div>
-      )}
-
-      <div className={`${css.mainWrapper} ${isMobile ? css.mobile : ''}`}>
-        <div className={css.list}>
-          <h2>Posts</h2>
-          {isLoading && <Loader />}
-          {isLoadingComments && <Loader />}
-          {Array.isArray(posts) &&
-            posts.map(post => {
-              return (
-                <div
-                  key={post.id}
-                  className={css.postItem}
-                  onClick={() => onSelectPostId(post.id)}
-                >
-                  <h3>{post.title}</h3>
-                  <p>{post.body}</p>
-                </div>
-              );
-            })}
-        </div>
-        {!isMobile && isTablet && (
-          <div className={css.details}>
-            <h3>Comments</h3>
-            <p>PostId: {selectedPostId}</p>
-            {comments?.length === 0 && (
-              <p>
-                There are no comments for current post. Please selecte another
-                one.
-              </p>
-            )}
-            {Array.isArray(comments) &&
-              comments.map(({ id, name, email, body }) => {
-                return (
-                  <div key={id} className={css.comment}>
-                    <h4>Name: {name}</h4>
-                    <p>
-                      <b>Email:</b> {email}
-                    </p>
-                    <p>
-                      <b>Body:</b> {body}
-                    </p>
-                  </div>
-                );
-              })}
-          </div>
-        )}
-      </div>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/post/:postId" element={<PostComments />} />
+        <Route path="/details" element={<DetailsPage />} />
+        <Route path="*" element={<PageNotFound404 />} />
+      </Routes>
+    </Layout>
   );
 };
