@@ -46,7 +46,7 @@ function HomePage() {
                 <Link
                   key={post.id}
                   className={css.postItem}
-                  to={`/post/${post.id}`}
+                  to={`/posts/${post.id}`}
                 >
                   <h3>{post.title}</h3>
                   <p>{post.body}</p>

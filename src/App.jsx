@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import HomePage from 'pages/HomePage';
-import DetailsPage from 'pages/DetailsPage';
-import PageNotFound404 from 'pages/PageNotFound404';
+import Loader from 'components/Loader/Loader';
 
-import PostComments from 'pages/PostComments';
+// import HomePage from 'pages/HomePage';
+// import DetailsPage from 'pages/DetailsPage';
+// import PageNotFound404 from 'pages/PageNotFound404';
+// import PostDetails from 'pages/PostDetails';
+// import PostsPage from 'pages/PostsPage';
+
 import Layout from 'Layout/Layout';
+
+const HomePage = lazy(() => import('pages/HomePage'));
+const DetailsPage = lazy(() => import('pages/DetailsPage'));
+const PageNotFound404 = lazy(() => import('pages/PageNotFound404'));
+const PostDetails = lazy(() => import('pages/PostDetails'));
+const PostsPage = lazy(() => import('pages/PostsPage'));
 
 // const productData = [
 //   {
@@ -44,12 +53,15 @@ import Layout from 'Layout/Layout';
 export const App = () => {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/post/:postId" element={<PostComments />} />
-        <Route path="/details" element={<DetailsPage />} />
-        <Route path="*" element={<PageNotFound404 />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/posts" element={<PostsPage />} />
+          <Route path="/posts/:postId/*" element={<PostDetails />} />
+          <Route path="/details" element={<DetailsPage />} />
+          <Route path="*" element={<PageNotFound404 />} />
+        </Routes>
+      </Suspense>
     </Layout>
   );
 };

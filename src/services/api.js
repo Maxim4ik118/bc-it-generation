@@ -10,9 +10,17 @@ export const fetchPosts = async () => {
 };
 
 export const fetchPostComments = async (postId = '1') => {
-    const { data } = await axios.get(
-      `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
-    );
-  
-    return data;
-  };
+  const { data } = await axios.get(
+    `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
+  );
+
+  return data;
+};
+
+export const fetchPostDetails = async (postId = '1') => {
+  const { data } = await axios.get(
+    `https://jsonplaceholder.typicode.com/posts/${postId}`
+  );
+
+  return data;
+};

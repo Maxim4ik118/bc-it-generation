@@ -10,7 +10,7 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ThemeProvider>
     <BrowserRouter 
-   basename="/react-goit-homework-05"
+ //  basename="/react-goit-homework-05"
     >
       <App />
     </BrowserRouter>
