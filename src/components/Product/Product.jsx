@@ -1,10 +1,19 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { removeProduct } from 'redux/products/productsSlice';
 
 // import s from './Product.module.scss';
 import { StyledProduct, StyledProductBtn } from './Styled';
 
-export const Product = ({ image, price, discount = {}, title }) => {
-  // const { image, price, discount = {}, title } = props;
+export const Product = ({ image, price, discount = {}, title, id }) => {
+  const dispatch = useDispatch();
+
+  const remove = (productId) => {
+    ///
+    dispatch(removeProduct(productId));
+    console.log(productId);
+  }
+
   const hasDiscount = discount.hasOwnProperty('value');
   return (
     <StyledProduct discount={hasDiscount}>
@@ -15,8 +24,8 @@ export const Product = ({ image, price, discount = {}, title }) => {
           Price: {price}$
           <span className="productDiscount">DISCOUNT -{discount.value}%</span>
         </p>
-        <StyledProductBtn type="button">
-          <span>Buy now</span>
+        <StyledProductBtn type="button" onClick={() => remove(id)}> 
+          <span>Delete</span>
         </StyledProductBtn>
       </div>
     </StyledProduct>
