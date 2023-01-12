@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Layout from 'Layout/Layout';
 import { Product } from 'components/Product/Product';
 import { setFilter } from 'redux/products/productsSlice';
+import ProductForm from 'components/ProductForm/ProductForm';
 
 const productData = [
   {
@@ -45,17 +46,25 @@ export const App = () => {
   const products = useSelector(state => state.products.products);
   const filterValue = useSelector(state => state.products.filter);
   const dispatch = useDispatch();
-  // const promoProducts = useSelector(state => state.products.promoProducts);
-  // const limitedProducts = useSelector(state => state.products.limitedProducts);
+
+  const filteredProducts = products.filter(product =>
+    product.title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+  );
 
   return (
     <Layout>
+      <ProductForm />
+      
+      <br />
+      <br />
+
       <input
         type="text"
         value={filterValue}
         onChange={e => dispatch(setFilter(e.target.value))}
       />
-      {products.map(product => (
+      
+      {filteredProducts.map(product => (
         <Product
           key={product.id}
           id={product.id}

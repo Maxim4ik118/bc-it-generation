@@ -33,11 +33,8 @@ const initialState = {
       title: 'Taco M',
     },
   ],
-  promoProducts: [{ id: '123', title: 'promo' }],
-  limitedProducts: [{ id: '321', title: 'limitedProduct' }],
-  filter: ''
+  filter: '',
 };
-
 const productsSlice = createSlice({
   // Ім'я слайсу
   name: 'products',
@@ -49,10 +46,13 @@ const productsSlice = createSlice({
       state.products = state.products.filter(p => p.id !== action.payload);
     },
     addProduct: (state, action) => {
-      state.products = [...state.products, action.payload];
+      state.products = [action.payload, ...state.products];
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
+    },
+    clearAllProducts: (state, action) => {
+      state.products = [];
     },
   },
 });
@@ -65,6 +65,6 @@ const productsSlice = createSlice({
 */
 
 // Генератори екшенів(інструкцій)
-export const { removeProduct, addProduct, setFilter } = productsSlice.actions;
+export const { removeProduct, addProduct, setFilter, clearAllProducts } = productsSlice.actions;
 // Редюсер слайсу
 export const productsReducer = productsSlice.reducer;
