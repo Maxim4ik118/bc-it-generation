@@ -1,37 +1,35 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorIndicator from 'components/ErrorIndicator';
 import Loader from 'components/Loader/Loader';
 
-import useSelectPost from 'hooks/useSelectPost';
+import { requestPostComments } from 'redux/postsSlice';
 
 import css from '../App.module.scss';
 
-function PostComments() {
-    const { postId } = useParams();
 
-  const {
-    selectedPostId,
-    setSelectedPostId,
-    comments,
-    isLoadingComments,
-    commentsError,
-  } = useSelectPost();
+function PostComments() {
+  const { postId } = useParams();
+  const dispatch = useDispatch();
+  const comments = useSelector(state => state.posts.comments);
+  const isLoading = useSelector(state => state.posts.isLoading);
+  const error = useSelector(state => state.posts.error);
 
   useEffect(() => {
-    if(!postId) return;
+    if (!postId) return;
 
-    setSelectedPostId(postId);
-  }, [setSelectedPostId, postId]);
+    dispatch(requestPostComments(postId));
+  }, [postId, dispatch]);
 
-  const hasCommentsError = commentsError.length > 0;
+  const hasCommentsError = error.length > 0;
   return (
     <div className={css.details}>
-      {isLoadingComments && <Loader />}
+      {isLoading && <Loader />}
       {hasCommentsError && <ErrorIndicator error={hasCommentsError} />}
       <h3>Comments</h3>
-      <p>PostId: {selectedPostId}</p>
+      <p>PostId: {postId}</p>
       {comments?.length === 0 && (
         <p>
           There are no comments for current post. Please selecte another one.

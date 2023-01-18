@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://Maxim4ik118.github.io/react-goit-homework-05/",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -11,6 +12,7 @@
     "classnames": "^2.3.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "sass": "^1.56.1",

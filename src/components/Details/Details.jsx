@@ -1,12 +1,10 @@
-import { ThemeContext } from 'contex/ThemeContext';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
 
 const Details = () => {
   const [time, setTime] = useState(0);
   const [pressedKey, setPressedKey] = useState('');
   const intervalRef = useRef();
-  const { theme, setTheme } = useContext(ThemeContext);
 
   const handleKeyDown = event => {
     setPressedKey(event.key);
@@ -29,10 +27,10 @@ const Details = () => {
     <div>
       <h2>Read the details :: {time}</h2>
       <h3>You have just pressed "{pressedKey}" key</h3>
-      <h4>Current theme is {theme}</h4>
+      {/* <h4>Current theme is {theme}</h4>
       <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
         Click to change theme
-      </button>
+      </button> */}
 
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo delectus
