@@ -71,8 +71,8 @@ const postsSlice = createSlice({
   // Об'єкт редюсерів
   reducers: {
     setFilter(state, action) {
-        state.filter = action.payload;
-    }
+      state.filter = action.payload;
+    },
   },
   extraReducers: builder =>
     builder
@@ -129,9 +129,13 @@ const postsSlice = createSlice({
       .addCase(requestPostComments.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
+      }),
 });
 
+// Селектори
+export const selectPosts = state => state.posts.posts;
+export const selectIsLoading = state => state.posts.isLoading;
+export const selectError = state => state.posts.error;
 // Генератори екшенів
 // export const { setFilter } = postsSlice.actions;
 // Редюсер слайсу

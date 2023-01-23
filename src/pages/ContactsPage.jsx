@@ -5,35 +5,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import ErrorIndicator from 'components/ErrorIndicator';
 import Loader from 'components/Loader/Loader';
 
-import {
-  requestPosts,
-  selectError,
-  selectIsLoading,
-  selectPosts,
-} from 'redux/postsSlice';
 
 import css from '../App.module.scss';
+import { getContactsRequest } from 'redux/contactSlice';
 
 // UI - User Interface(React)
-function HomePage() {
+function ContactsPage() {
   const dispatch = useDispatch();
-  const posts = useSelector(selectPosts);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const contacts = useSelector(state => state.phonebook.contacts);
+  const isLoading = useSelector(state => state.phonebook.isLoading);
+  const error = useSelector(state => state.phonebook.error);
+  const userData = useSelector(state => state.auth.userData);
 
   useEffect(() => {
-    dispatch(requestPosts());
-  }, [dispatch]); // componentDidMount
+    if(userData == null) return;
 
-  const hasError = error.length > 0;
+    dispatch(getContactsRequest());
+  }, [userData, dispatch]); // componentDidMount
+
+  const hasError = error?.length > 0;
   return (
     <>
       {hasError && <ErrorIndicator error={error} />}
       <div className={css.mainWrapper}>
         <div className={css.list}>
-          <h2>Posts</h2>
+          <h2>Contacts</h2>
           {isLoading && <Loader />}
-          {Array.isArray(posts) &&
+          {/* {Array.isArray(posts) &&
             posts.map(post => {
               return (
                 <Link
@@ -45,11 +43,11 @@ function HomePage() {
                   <p>{post.body}</p>
                 </Link>
               );
-            })}
+            })} */}
         </div>
       </div>
     </>
   );
 }
 
-export default HomePage;
+export default ContactsPage;

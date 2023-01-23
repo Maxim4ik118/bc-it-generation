@@ -10,12 +10,15 @@ import Loader from 'components/Loader/Loader';
 // import PostsPage from 'pages/PostsPage';
 
 import Layout from 'Layout/Layout';
+import RegisterPage from 'pages/RegisterPage';
+import LoginPage from 'pages/LoginPage';
+import ContactsPage from 'pages/ContactsPage';
 
-const HomePage = lazy(() => import('pages/HomePage'));
-const DetailsPage = lazy(() => import('pages/DetailsPage'));
+// const HomePage = lazy(() => import('pages/HomePage'));
+// const DetailsPage = lazy(() => import('pages/DetailsPage'));
 const PageNotFound404 = lazy(() => import('pages/PageNotFound404'));
-const PostDetails = lazy(() => import('pages/PostDetails'));
-const PostsPage = lazy(() => import('pages/PostsPage'));
+// const PostDetails = lazy(() => import('pages/PostDetails'));
+// const PostsPage = lazy(() => import('pages/PostsPage'));
 
 // const productData = [
 //   {
@@ -55,10 +58,13 @@ export const App = () => {
     <Layout>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<HomePage />} />
           <Route path="/posts" element={<PostsPage />} />
           <Route path="/posts/:postId/*" element={<PostDetails />} />
-          <Route path="/details" element={<DetailsPage />} />
+          <Route path="/details" element={<DetailsPage />} /> */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/contacts" element={<ContactsPage />} />
           <Route path="*" element={<PageNotFound404 />} />
         </Routes>
       </Suspense>

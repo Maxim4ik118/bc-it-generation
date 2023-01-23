@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import React, { useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
 
 function PageNotFound404() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      navigate('/');
-    }, 5000);
+  // useEffect(() => {
+  //   const timerId = setTimeout(() => {
+  //     navigate('/');
+  //   }, 5000);
 
-    return () => clearTimeout(timerId);
-  }, [navigate]);
+  //   return () => clearTimeout(timerId);
+  // }, [navigate]);
 
   return (
     <div>
