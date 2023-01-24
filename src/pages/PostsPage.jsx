@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestPostBySearchTerm } from 'redux/postsSlice';
 
 import css from '../App.module.scss';
+import WithAuthRedirect from 'hoc/WithAuthRedirect';
 
 function SearchPostsPage() {
   const dispatch = useDispatch();
@@ -69,4 +70,4 @@ function SearchPostsPage() {
   );
 }
 
-export default SearchPostsPage;
+export default WithAuthRedirect(SearchPostsPage, "/login");

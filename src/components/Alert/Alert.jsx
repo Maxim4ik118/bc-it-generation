@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { StyledAlert } from './Styled';
 
-export const Alert = ({ outlined = false, className = "", children }) => {
+export const Alert = ({  outlined = false, className = "", children }) => {
   return (
     <StyledAlert
       className={cn(className, {

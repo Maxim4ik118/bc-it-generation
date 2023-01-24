@@ -1,17 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
+import { logOutRequest } from 'redux/userSlice';
+
 import css from '../App.module.scss';
-import { useSelector } from 'react-redux';
 
 const styles = {
   color: '#010101',
 };
 
 function Layout({ children }) {
+  const dispatch = useDispatch();
   const userData = useSelector(state => state.auth.userData);
 
+
+  const handleLogOut = () => {
+    dispatch(logOutRequest());
+  }
+
+  const isUserAuhenticated = userData !== null;
   return (
     <div style={styles}>
       <header className={css.header}>
@@ -40,17 +49,20 @@ function Layout({ children }) {
           >
             Details
           </NavLink> */}
-          {userData !== null ? (
-            <NavLink
-              className={({ isActive }) =>
-                cn(css.NavLink, { [css.active]: isActive })
-              }
-              to="/contacts"
-            >
-              Contacts
-            </NavLink>
-          ) : null}
-          {userData !== null ? null : (
+          {isUserAuhenticated ? (
+            <>
+              {' '}
+              <NavLink
+                className={({ isActive }) =>
+                  cn(css.NavLink, { [css.active]: isActive })
+                }
+                to="/contacts"
+              >
+                Contacts
+              </NavLink>
+              <button onClick={handleLogOut} type='button'>Log Out</button>
+            </>
+          ) : (
             <>
               <NavLink
                 className={({ isActive }) =>

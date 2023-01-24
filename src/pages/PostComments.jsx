@@ -8,6 +8,7 @@ import Loader from 'components/Loader/Loader';
 import { requestPostComments } from 'redux/postsSlice';
 
 import css from '../App.module.scss';
+import WithAuthRedirect from 'hoc/WithAuthRedirect';
 
 
 function PostComments() {
@@ -53,4 +54,4 @@ function PostComments() {
   );
 }
 
-export default PostComments;
+export default WithAuthRedirect(PostComments, "/register");

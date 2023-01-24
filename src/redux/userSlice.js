@@ -30,6 +30,33 @@ export const loginUserRequest = createAsyncThunk(
   }
 );
 
+export const authUserRequest = createAsyncThunk(
+  'user/auth',
+  async (_, thunkApi) => {
+    try {
+      const response = await UserAPI.getUserDetailsRequest();
+
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const logOutRequest = createAsyncThunk(
+  'user/logOut',
+  async (_, thunkApi) => {
+    try {
+      const response = await UserAPI.userLogOutRequest();
+      localStorage.removeItem('token');
+
+      return response;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   userData: null,
   token: null,
@@ -76,7 +103,37 @@ const userSlice = createSlice({
       .addCase(loginUserRequest.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      }),
+      })
+      // Auth User
+
+      .addCase(authUserRequest.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(authUserRequest.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData = action.payload;
+      })
+      .addCase(authUserRequest.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // Log Out
+
+      .addCase(logOutRequest.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(logOutRequest.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.token = null;
+        state.userData = null;
+      })
+      .addCase(logOutRequest.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 });
 
 export const userReducer = userSlice.reducer;

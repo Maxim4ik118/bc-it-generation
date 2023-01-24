@@ -6,6 +6,7 @@ import ErrorIndicator from 'components/ErrorIndicator';
 import Loader from 'components/Loader/Loader';
 
 import { requestPostDetails } from 'redux/postsSlice';
+import WithAuthRedirect from 'hoc/WithAuthRedirect';
 
 const PostComments = lazy(() => import('./PostComments'));
 
@@ -57,4 +58,4 @@ function PostDetails() {
   );
 }
 
-export default PostDetails;
+export default WithAuthRedirect(PostDetails, "/register");

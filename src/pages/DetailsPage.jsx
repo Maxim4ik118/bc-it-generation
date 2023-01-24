@@ -1,4 +1,5 @@
 import Details from 'components/Details/Details';
+import WithAuthRedirect from 'hoc/WithAuthRedirect';
 
 import React from 'react';
 
@@ -11,4 +12,6 @@ function DetailsPage() {
   );
 }
 
-export default DetailsPage;
+
+
+export default WithAuthRedirect(DetailsPage, "/login");
